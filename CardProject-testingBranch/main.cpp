@@ -1,4 +1,7 @@
 #include <iostream>
+#include <set>
+#include <string>
+
 using namespace std;
 
 #define CATCH_CONFIG_RUNNER
@@ -79,7 +82,7 @@ TEST_CASE("Test Deck")
         REQUIRE(deck1.getLength() == 52);
     }
 
-    /*SECTION("Test shuffle Deck")
+    SECTION("Test shuffle Deck")
     {
         Deck deck1;
         Deck deck2;
@@ -88,16 +91,50 @@ TEST_CASE("Test Deck")
         deck2.shuffle();
         
         //Test to see if the decks are the same
-        REQUIRE(deck1.equal(deck2) == true);
+        REQUIRE(deck1.equal(deck2) == false);
+        //if it fails, run it again
     }
 
     SECTION("Test Dealing")
     {
+        //remove 7 cards
         Deck deck1;
-
         deck1.deal(7);
-
         REQUIRE(deck1.getLength() == 45);
-    }*/
-    
+
+        //remove all 52 cards one at a time
+        Deck deck2;
+        for(int i = 0;i<52;i++){
+            deck2.deal(1);
+        }
+        REQUIRE(deck2.getLength()==0);
+
+        //require that an exception is thrown when there are no more cards
+        REQUIRE_THROWS(deck2.deal(1));
+
+        //check that each card removed is unique
+        set<string> uniqueCards;
+        Deck deck3;
+        for(int i = 0;i<52;i++){
+            vector<Card> cards = deck3.deal(1);
+            uniqueCards.insert(cards.back().toString());
+        }
+        REQUIRE(uniqueCards.size()==52);
+    }
+
+    SECTION("Test Dealing 2")
+    {
+        for(int i = 0;i<52;i++){
+            Deck deck;
+            vector<Card> cards = deck.deal(i);
+            REQUIRE(deck.getLength() + cards.size() == 52);
+
+            vector<Card> leftInDeck = deck.deal(52-i);
+            for(int j = 0;j<cards.size();j++){
+                for(int k = 0;k<leftInDeck.size();k++){
+                    REQUIRE(cards.at(j).toString()!=leftInDeck.at(k).toString());
+                }
+            }
+        }
+    }
 }

@@ -17,7 +17,7 @@ public:
 
     bool equal(Deck testDeck);
 
-    void deal(int totalToDeal);
+    vector<Card> deal(int totalToDeal);
 
 private:
 vector <Card> DeckOfCards;

@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <string>
+#include <algorithm>
 #include "card.h"
 #include "deck.h"
 
@@ -32,44 +34,54 @@ Deck::Deck()
 		Card Tempcard(i, "Diamonds");
 		DeckOfCards.push_back(Tempcard);
 	}
-
 }
 
 int Deck::getLength()
 {
-    return DeckOfCards.size();
+	return DeckOfCards.size();
 }
 
 void Deck::shuffle()
 {
-
+	random_shuffle(DeckOfCards.begin(), DeckOfCards.end() );
 }
 
 bool Deck::equal(Deck testDeck)
 {
-    bool retval = true;
+	bool retval = true;
 
-    if(testDeck.DeckOfCards.size() != DeckOfCards.size())
-    {
-        retval = false;
-    }
-    else
-    {
-        for(int i = 0; i < DeckOfCards.size(); i++)
-        {
-            if(DeckOfCards.at(i).eqaul(testDeck.DeckOfCards.at(i)) == false)
-            {
-                retval = false;
-                break;
-            }
-        }
-        
-    }
+	if (testDeck.DeckOfCards.size() != DeckOfCards.size())
+	{
+		retval = false;
+	}
+	else
+	{
+		for (int i = 0; i < DeckOfCards.size(); i++)
+		{
+			if (DeckOfCards.at(i).eqaul(testDeck.DeckOfCards.at(i)) == false)
+			{
+				retval = false;
+				break;
+			}
+		}
+	}
 
-    return retval;
+	return retval;
 }
 
-void Deck::deal(int totalToDeal)
+vector<Card> Deck::deal(int totalToDeal)
 {
+	if (DeckOfCards.size() < totalToDeal)
+	{
+		throw "tooFewCards";
+	}
+	vector<Card> returnCards;
 
+	for (int i = 0; i < totalToDeal; i++)
+	{
+		returnCards.push_back(DeckOfCards.back());
+		DeckOfCards.pop_back();
+	}
+
+	return returnCards;
 }

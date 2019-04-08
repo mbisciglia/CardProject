@@ -1,4 +1,4 @@
-#include "Card.h"
+#include "card.h"
 #include <iostream>
 
 using namespace std;
