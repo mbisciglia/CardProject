@@ -7,7 +7,6 @@
 
 using namespace std;
 
-using namespace std;
 
 Deck::Deck()
 {
